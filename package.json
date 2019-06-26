@@ -1,0 +1,33 @@
+{
+  "name": "audio-journey",
+  "version": "0.0.1",
+  "description": "Walk throught sounds",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./app/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chaucharian/audio-journey.git"
+  },
+  "keywords": [
+    "audio",
+    "spatial",
+    "3d",
+    "sound",
+    "arduino",
+    "node"
+  ],
+  "author": "AS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chaucharian/audio-journey/issues"
+  },
+  "dependencies": {
+    "howler": "^2.1.2",
+    "sounds": "^1.0.2"
+  },
+  "devDependencies": {},
+  "homepage": "https://github.com/Chaucharian/audio-journey#readme"
+}
