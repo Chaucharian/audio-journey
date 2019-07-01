@@ -3,6 +3,9 @@ import ambientSound from './sounds/ambiente.mp3';
 import fogataSound from './sounds/fuego.mp3';
 import natureeSound from './sounds/naturaleza.mp3';
 
+import Player from './player';
+import Render from './render';
+
 const ambientalSound = new Howl({
     src: [ambientSound],
     loop: true
@@ -16,22 +19,82 @@ const natureSound = new Howl({
     loop: true
 });
 const roomSize = 8;
-let keys = [];
+let upKey = false, downKey = false, leftKey = false, rightKey = false;
 let position = { x: 4, y: 4 };
 
-main();
+class Main {   
+    
+    constructor() {
+        document.addEventListener('keydown', event => {
+            const keyCode = event.keyCode;
 
-function main () {    
-    document.addEventListener('keydown', event => {
-        keys[event.keyCode] = true;
-    }, false);
-    document.addEventListener('keyup', event => {
-        keys[event.keyCode] = false;
-    }, false);
+            if(keyCode === 37) {
+                upKey = true;
+            } else if(keyCode === 39) {
+                downKey = true;
+            } else if(keyCode === 38) {
+                leftKey = true;
+            } else if(keyCode === 40) {
+                rightKey = true;
+            }
+        }, false);
+        document.addEventListener('keyup', event => {
+            const keyCode = event.keyCode;
 
-    setSounds();
-    update();
+            if(keyCode === 37) {
+                upKey = false;
+            } else if(keyCode === 39) {
+                downKey = false;
+            } else if(keyCode === 38) {
+                leftKey = false;
+            } else if(keyCode === 40) {
+                rightKey = false;
+            }
+        }, false);
+        document.addEventListener('mousedown', event => {
+        }, false);
+
+        this.SCREEN_WIDTH = window.innerWidth;
+        this.SCREEN_HEIGHT = window.innerHeight;
+        this.entities = [];
+        this.player = null;
+        this.render = new Render(this.SCREEN_WIDTH, this.SCREEN_HEIGHT, this.entities);
+        this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2));
+
+        this.update();
+    }
+    
+    update() {
+        setTimeout(() => this.update(), 50);
+
+        let playerPosition = this.player.getPosition();
+
+        if(upKey) {
+            playerPosition.x -= this.player.getVelocity();
+        } else if(downKey) {
+            playerPosition.x += this.player.getVelocity();
+        } else if(leftKey) {
+            playerPosition.y -= this.player.getVelocity();
+        } else if(rightKey) {
+            playerPosition.y += this.player.getVelocity();
+        }
+
+        this.player.update(playerPosition);
+        // move 3d space acordding to player's position
+        Howler.pos(playerPosition.x, playerPosition.y, -0.5);
+    }
+
+    createEntity(object) {
+        // each entity is added to a pool of entities for handling them better
+        if(object.getId() === 'player' && this.player === null) this.player = object;
+        this.entities.push(object);
+    }
+   
 }
+
+new Main();
+
+/*
 
 function setSounds() {
     setAmbientalSound();
@@ -89,18 +152,4 @@ function setNatureSound() {
       }, soundId);
     }.bind(this), soundId);
 }
-
-function update() {
-    requestAnimationFrame(update);
-    if(keys[37]) {
-        position.x -= .01;
-    } else if(keys[39]) {
-        position.x += .01;
-    } else if(keys[38]) {
-        position.y += .01;
-    } else if(keys[40]) {
-        position.y -= .01;;
-    }
-    // move listener position like a player in a game
-    Howler.pos(position.x, position.y, -0.5);
-}
+*/

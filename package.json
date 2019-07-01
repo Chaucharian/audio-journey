@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "howler": "^2.1.2",
+    "p5": "^0.8.0",
     "sounds": "^1.0.2"
   },
   "devDependencies": {},
