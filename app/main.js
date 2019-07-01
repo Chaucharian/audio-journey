@@ -66,13 +66,13 @@ class Main {
         var soundId = ambientalSound.play();
         ambientalSound.once('play', function() {
           // Set the position of the speaker in 3D space.
-          ambientalSound.pos(5, 5, -0.5, soundId);
+          ambientalSound.pos(this.SCREEN_WIDTH / 2 + 20, this.SCREEN_HEIGHT / 2, -0.5, soundId);
           ambientalSound.volume(1, soundId);
     
           // Tweak the attributes to get the desired effect.
           ambientalSound.pannerAttr({
             panningModel: 'HRTF',
-            refDistance: 0.8,
+            refDistance: 5,
             rolloffFactor: 2.5,
             distanceModel: 'exponential'
           }, soundId);
@@ -98,7 +98,7 @@ class Main {
 
         this.player.update(playerPosition);
         // move 3d space acordding to player's position
-     //   Howler.pos(playerPosition.x, playerPosition.y, -0.5);
+        Howler.pos(playerPosition.x, playerPosition.y, -0.5);
     }
 
     createEntity(object) {

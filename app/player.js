@@ -4,7 +4,7 @@ class Player extends Entity {
 
     constructor(x, y) {
         super({x, y, id: 'player'});
-        this.velocity = 20;
+        this.velocity = 1;
     }
 
     getVelocity() {
