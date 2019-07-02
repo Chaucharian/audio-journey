@@ -5,6 +5,7 @@ import natureeSound from './sounds/naturaleza.mp3';
 import Player from './player';
 import Render from './render';
 import Sound from './sound';
+import UI from './ui';
 
 const ambientalSound = new Howl({
     src: [ambientSound],
@@ -53,6 +54,7 @@ class Main {
             this.mouse.click = true;
             this.mouse.x = event.clientX;
             this.mouse.y = event.clientY;
+            this.ui.showPanelOptions(event.pageX, event.pageY);
         }, false);
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
@@ -64,7 +66,7 @@ class Main {
         this.player = null;
         this.mouse = { click: false, x: 0, y: 0 };
         this.render = new Render(this.SCREEN_WIDTH, this.SCREEN_HEIGHT, this.entities);
-
+        this.ui = new UI();
         this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2));
         this.update();
     }
