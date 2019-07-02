@@ -1,10 +1,24 @@
 import Entity from './entity';
 import { Howl } from 'howler';
-
+import ambientSound from './sounds/ambiente.mp3';
+import fogataSound from './sounds/fuego.mp3';
+import natureeSound from './sounds/naturaleza.mp3';
 class Sound extends Entity {
 
     constructor(x, y, soundPath) {
         super({ x, y, id: 'sound', soundPath });
+
+        switch(soundPath) {
+            case 'Nature':
+                soundPath = natureeSound;
+            break;
+            case 'Fire':
+                soundPath = fogataSound;
+            break;
+            case 'Ambient':
+                soundPath = ambientSound;
+            break;
+        }
         
         this.sound = new Howl({
             src: [soundPath],

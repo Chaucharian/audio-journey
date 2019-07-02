@@ -1,26 +1,9 @@
-import ambientSound from './sounds/ambiente.mp3';
-import fogataSound from './sounds/fuego.mp3';
-import natureeSound from './sounds/naturaleza.mp3';
-
 import Player from './player';
 import Render from './render';
 import Sound from './sound';
 import UI from './ui';
 
-const ambientalSound = new Howl({
-    src: [ambientSound],
-    loop: true
-});
-const fireSound = new Howl({
-    src: [fogataSound],
-    loop: true
-});
-const natureSound = new Howl({
-    src: [natureeSound],
-    loop: true
-});
 let upKey = false, downKey = false, leftKey = false, rightKey = false;
-
 class Main {   
     
     constructor() {
@@ -51,10 +34,17 @@ class Main {
             }
         }, false);
         document.addEventListener('mousedown', event => {
-            this.mouse.click = true;
-            this.mouse.x = event.clientX;
-            this.mouse.y = event.clientY;
-            this.ui.showPanelOptions(event.pageX, event.pageY);
+            const soundName = event.target.innerText;
+            if(soundName === '') {
+                this.ui.showOptionsPanel(event.pageX, event.pageY);
+                this.ui.x = event.clientX;
+                this.ui.y = event.clientY;
+            } else {
+                this.ui.soundName = soundName;
+                this.mouse.click = true;
+                this.mouse.x = this.ui.x;
+                this.mouse.y = this.ui.y;
+            }
         }, false);
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
@@ -85,7 +75,8 @@ class Main {
         } else if(rightKey) {
             playerPosition.y += this.player.getVelocity();
         } else if(this.mouse.click) {
-            this.createEntity( new Sound(this.mouse.x, this.mouse.y, fogataSound) );
+            this.createEntity( new Sound(this.mouse.x, this.mouse.y, this.ui.soundName) );
+            this.ui.hideOptionsPanel();
             this.mouse.click = false;
         }
 
