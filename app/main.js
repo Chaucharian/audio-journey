@@ -1,10 +1,10 @@
-import {Howl, Howler} from 'howler';
 import ambientSound from './sounds/ambiente.mp3';
 import fogataSound from './sounds/fuego.mp3';
 import natureeSound from './sounds/naturaleza.mp3';
 
 import Player from './player';
 import Render from './render';
+import Sound from './sound';
 
 const ambientalSound = new Howl({
     src: [ambientSound],
@@ -18,9 +18,7 @@ const natureSound = new Howl({
     src: [natureeSound],
     loop: true
 });
-const roomSize = 8;
 let upKey = false, downKey = false, leftKey = false, rightKey = false;
-let position = { x: 4, y: 4 };
 
 class Main {   
     
@@ -52,32 +50,22 @@ class Main {
             }
         }, false);
         document.addEventListener('mousedown', event => {
+            this.mouse.click = true;
+            this.mouse.x = event.clientX;
+            this.mouse.y = event.clientY;
+        }, false);
+        document.addEventListener('mouseup', event => {
+            this.mouse.click = false;
         }, false);
 
         this.SCREEN_WIDTH = window.innerWidth;
         this.SCREEN_HEIGHT = window.innerHeight;
         this.entities = [];
         this.player = null;
+        this.mouse = { click: false, x: 0, y: 0 };
         this.render = new Render(this.SCREEN_WIDTH, this.SCREEN_HEIGHT, this.entities);
+
         this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2));
-
-        Howler.pos(5,5, -0.5);
-
-        var soundId = ambientalSound.play();
-        ambientalSound.once('play', function() {
-          // Set the position of the speaker in 3D space.
-          ambientalSound.pos(this.SCREEN_WIDTH / 2 + 20, this.SCREEN_HEIGHT / 2, -0.5, soundId);
-          ambientalSound.volume(1, soundId);
-    
-          // Tweak the attributes to get the desired effect.
-          ambientalSound.pannerAttr({
-            panningModel: 'HRTF',
-            refDistance: 5,
-            rolloffFactor: 2.5,
-            distanceModel: 'exponential'
-          }, soundId);
-        }.bind(this), soundId);
-
         this.update();
     }
     
@@ -94,11 +82,12 @@ class Main {
             playerPosition.y -= this.player.getVelocity();
         } else if(rightKey) {
             playerPosition.y += this.player.getVelocity();
+        } else if(this.mouse.click) {
+            this.createEntity( new Sound(this.mouse.x, this.mouse.y, fogataSound) );
+            this.mouse.click = false;
         }
 
         this.player.update(playerPosition);
-        // move 3d space acordding to player's position
-        Howler.pos(playerPosition.x, playerPosition.y, -0.5);
     }
 
     createEntity(object) {
