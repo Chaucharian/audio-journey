@@ -31,7 +31,7 @@ class Render {
         if(this.entities.length === 0) return;
         for(let entity of this.entities) {
             if(entity.getId() === 'player') p5.ellipse(entity.getPosition().x, entity.getPosition().y, this.radius, this.radius);        
-            if(entity.getId() === 'sound') p5.rect(entity.getPosition().x, entity.getPosition().y, this.radius, this.radius);        
+            if(entity.getId() === 'sound') p5.rect(entity.getPosition().x - 10, entity.getPosition().y - 10, 20, 20);        
         }
       }
 
