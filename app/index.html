@@ -18,7 +18,17 @@
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                 z-index: 1;
             }
+
+            #sound-config {
+                display: none;
+            }
+
+            #sound-selection {
+                display: none;
+            }
+
             #panel a {
+                cursor: pointer;
                 color: black;
                 padding: 12px 16px;
                 text-decoration: none;
@@ -30,9 +40,14 @@
 
         </style>
         <div id="panel">
-            <a>Fire</a>
-            <a>Nature</a>
-            <a>Ambient</a>
+            <div id="sound-selection">
+                <a>Fire</a>
+                <a>Nature</a>
+                <a>Ambient</a>
+            </div>
+            <div id="sound-config">
+                <a>Sound Config</a>
+            </div>
         </div>
         <script src="./main.js"></script>
     </body>

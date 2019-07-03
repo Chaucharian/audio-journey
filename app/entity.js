@@ -1,10 +1,11 @@
 class Entity {
 
     constructor(args) {
-        const { x, y, soundPath, id } = args;
+        const { x, y, soundPath, id, size } = args;
         this.position = { x, y };
         this.id = id;
         this.soundPath = soundPath;
+        this.size = size || 20;
     }
 
     update(position) {
@@ -13,6 +14,14 @@ class Entity {
 
     getPosition() {
         return this.position;
+    }
+
+    setSize(size) {
+        this.size = size;
+    }
+
+    getSize() {
+        return this.size;
     }
     
     getId() {

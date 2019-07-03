@@ -35,15 +35,17 @@ class Main {
         }, false);
         document.addEventListener('mousedown', event => {
             const soundName = event.target.innerText;
-            if(soundName === '') {
-                this.ui.showOptionsPanel(event.pageX, event.pageY);
-                this.ui.x = event.clientX;
-                this.ui.y = event.clientY;
-            } else {
+            const mouseX = event.pageX, mouseY = event.pageY;
+
+            if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else if(soundName === '') { // open sound selection panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else { // instance sound 
                 this.ui.soundName = soundName;
                 this.mouse.click = true;
-                this.mouse.x = this.ui.x;
-                this.mouse.y = this.ui.y;
+                this.mouse.x = mouseX;
+                this.mouse.y = mouseY;
             }
         }, false);
         document.addEventListener('mouseup', event => {
@@ -55,9 +57,10 @@ class Main {
         this.entities = [];
         this.player = null;
         this.mouse = { click: false, x: 0, y: 0 };
-        this.render = new Render(this.SCREEN_WIDTH, this.SCREEN_HEIGHT, this.entities);
-        this.ui = new UI();
-        this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2));
+        this.ui = new UI(this.entities);
+        this.render = new Render(this);
+
+        this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, 40));
         this.update();
     }
     
@@ -76,7 +79,7 @@ class Main {
             playerPosition.y += this.player.getVelocity();
         } else if(this.mouse.click) {
             this.createEntity( new Sound(this.mouse.x, this.mouse.y, this.ui.soundName) );
-            this.ui.hideOptionsPanel();
+            this.ui.hidePanel();
             this.mouse.click = false;
         }
 
