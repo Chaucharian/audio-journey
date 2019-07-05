@@ -4,8 +4,9 @@
   "description": "Walk throught sounds",
   "main": "index.js",
   "scripts": {
-    "start": "parcel ./app/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./server.js",
+    "build": "parcel build ./app/index.html",
+    "heroku-postbuild": "parcel build ./app/index.html"
   },
   "repository": {
     "type": "git",
@@ -27,10 +28,13 @@
   "dependencies": {
     "howler": "^2.1.2",
     "p5": "^0.8.0",
-    "sounds": "^1.0.2",
     "parcel": "^1.12.3",
-    "parcel-bundler": "^1.12.3"
+    "parcel-bundler": "^1.12.3",
+    "sounds": "^1.0.2",
+    "express": "^4.16.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  },
   "homepage": "https://github.com/Chaucharian/audio-journey#readme"
 }
