@@ -33,8 +33,12 @@ class Sound extends Entity {
           // Tweak the attributes to get the desired effect.
           this.sound.pannerAttr({
             panningModel: 'HRTF',
-            refDistance: 8,
-            rolloffFactor: 2.5,
+            coneOuterAngle: 360,
+            coneInnerAngle: 360,
+            coneOuterGain: 1,
+            maxDistance: 200,
+            refDistance: 1,
+            rolloffFactor: 1,
             distanceModel: 'exponential'
           }, soundId);
         }, soundId);
