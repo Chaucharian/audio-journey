@@ -11,26 +11,25 @@ class Main {
             const keyCode = event.keyCode;
 
             if(keyCode === 37) {
-                upKey = true;
-            } else if(keyCode === 39) {
-                downKey = true;
-            } else if(keyCode === 38) {
                 leftKey = true;
-            } else if(keyCode === 40) {
+            } else if(keyCode === 39) {
                 rightKey = true;
+            } else if(keyCode === 38) {
+                upKey = true;
+            } else if(keyCode === 40) {
+                downKey = true;
             }
         }, false);
         document.addEventListener('keyup', event => {
             const keyCode = event.keyCode;
-
             if(keyCode === 37) {
-                upKey = false;
-            } else if(keyCode === 39) {
-                downKey = false;
-            } else if(keyCode === 38) {
                 leftKey = false;
-            } else if(keyCode === 40) {
+            } else if(keyCode === 39) {
                 rightKey = false;
+            } else if(keyCode === 38) {
+                upKey = false;
+            } else if(keyCode === 40) {
+                downKey = false;
             }
         }, false);
         document.addEventListener('mousedown', event => {
@@ -51,6 +50,23 @@ class Main {
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
         }, false);
+        window.addEventListener('deviceorientation', event => {
+            let x = event.beta;  // In degree in the range [-180,180]
+            let y = event.gamma; // In degree in the range [-90,90]
+
+            // Because we don't want to have the device upside down
+            // We constrain the x value to the range [-90,90]
+            if (x >  90) { x =  90};
+            if (x < -90) { x = -90};
+
+            // To make computation easier we shift the range of 
+            // x and y to [0,180]
+            x += 90;
+            y += 90;
+            
+            this.player.setOrientationValues({ x, y });
+        });
+
 
         this.SCREEN_WIDTH = window.innerWidth;
         this.SCREEN_HEIGHT = window.innerHeight;
@@ -67,23 +83,29 @@ class Main {
     update() {
         setTimeout(() => this.update(), 50);
 
-        let playerPosition = this.player.getPosition();
-
         if(upKey) {
-            playerPosition.x -= this.player.getVelocity();
-        } else if(downKey) {
-            playerPosition.x += this.player.getVelocity();
-        } else if(leftKey) {
-            playerPosition.y -= this.player.getVelocity();
-        } else if(rightKey) {
-            playerPosition.y += this.player.getVelocity();
-        } else if(this.mouse.click) {
+            const newVelocity = this.player.getVelocity().y -= this.player.getAceleration();
+            this.player.setVelocityY(newVelocity);
+        }
+        if(downKey) {
+            const newVelocity = this.player.getVelocity().y += this.player.getAceleration();
+            this.player.setVelocityY(newVelocity);
+        }
+        if(leftKey) {
+            const newVelocity = this.player.getVelocity().x -= this.player.getAceleration();
+            this.player.setVelocityX(newVelocity);
+        }
+        if(rightKey) {
+            const newVelocity = this.player.getVelocity().x += this.player.getAceleration();
+            this.player.setVelocityX(newVelocity);
+        }
+        if(this.mouse.click) {
             this.createEntity( new Sound(this.mouse.x, this.mouse.y, this.ui.soundName) );
             this.ui.hidePanel();
             this.mouse.click = false;
         }
 
-        this.player.update(playerPosition);
+        this.player.update();
     }
 
     createEntity(object) {
