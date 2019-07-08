@@ -88,6 +88,15 @@ class Main {
 
         this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, 40));
         this.update();
+
+        let element = document.createElement('p');
+        document.body.append(element);
+        if(window.DeviceMotionEvent) {
+            element.innerText = "te anda guachin";
+        } else {
+            element.innerText = "no se andaa nia ahiii!";
+        }
+        
     }
     
     update() {
