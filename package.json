@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./server.js",
-    "build": "parcel build ./app/index.html --public-url /",
+    "build": "parcel build ./app/index.html",
     "develop": "parcel ./app/index.html",
     "heroku-postbuild": "parcel build ./app/index.html"
   },
