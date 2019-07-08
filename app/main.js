@@ -50,30 +50,33 @@ class Main {
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
         }, false);
-       /* window.addEventListener('deviceorientation', event => {
-            let x = event.beta;  // In degree in the range [-180,180]
-            let y = event.gamma; // In degree in the range [-90,90]
-
-            // Because we don't want to have the device upside down
-            // We constrain the x value to the range [-90,90]
-            if (x >  90) { x =  90};
-            if (x < -90) { x = -90};
-
-            // To make computation easier we shift the range of 
-            // x and y to [0,180]
-            x += 90;
-            y += 90;
-            
-            this.player.setOrientationValues({ x, y });
-        });*/
         window.addEventListener('devicemotion', event => {
-            // Y = < 0 arriba > 0 abajo
-            // X = < 0 izquierda > 0 derecha
-            // console.log(event.accelerationIncludingGravity.y);
+            // Y = < 0 up > 0 down
+            // X = < 0 left > 0 rigth
+            const x = event.accelerationIncludingGravity.x;
+            const y = event.accelerationIncludingGravity.y;
+            // determing key by measuring aceleration axis
+            if(x >= 1) {
+                rightKey = true;
+                leftKey = false;
+            } else if(x <= -1) {
+                leftKey = true;
+                rightKey = false;
+            } else {
+                leftKey = false;
+                rightKey = false;
+            }
+            if(y >= 1) {
+                downKey = false;
+                upKey = true;
+            } else if(y <= -1) {
+                upKey = false;
+                downKey = true;
+            } else {
+                upKey = false;
+                downKey = false;
+            }
         }, false);
-
-
-
 
         this.SCREEN_WIDTH = window.innerWidth;
         this.SCREEN_HEIGHT = window.innerHeight;
