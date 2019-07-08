@@ -11,43 +11,71 @@ class Main {
             const keyCode = event.keyCode;
 
             if(keyCode === 37) {
-                upKey = true;
-            } else if(keyCode === 39) {
-                downKey = true;
-            } else if(keyCode === 38) {
                 leftKey = true;
-            } else if(keyCode === 40) {
+            } else if(keyCode === 39) {
                 rightKey = true;
+            } else if(keyCode === 38) {
+                upKey = true;
+            } else if(keyCode === 40) {
+                downKey = true;
             }
         }, false);
         document.addEventListener('keyup', event => {
             const keyCode = event.keyCode;
-
             if(keyCode === 37) {
-                upKey = false;
-            } else if(keyCode === 39) {
-                downKey = false;
-            } else if(keyCode === 38) {
                 leftKey = false;
-            } else if(keyCode === 40) {
+            } else if(keyCode === 39) {
                 rightKey = false;
+            } else if(keyCode === 38) {
+                upKey = false;
+            } else if(keyCode === 40) {
+                downKey = false;
             }
         }, false);
         document.addEventListener('mousedown', event => {
             const soundName = event.target.innerText;
-            if(soundName === '') {
-                this.ui.showOptionsPanel(event.pageX, event.pageY);
-                this.ui.x = event.clientX;
-                this.ui.y = event.clientY;
-            } else {
+            const mouseX = event.pageX, mouseY = event.pageY;
+
+            if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else if(soundName === '') { // open sound selection panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else { // instance sound 
                 this.ui.soundName = soundName;
                 this.mouse.click = true;
-                this.mouse.x = this.ui.x;
-                this.mouse.y = this.ui.y;
+                this.mouse.x = mouseX;
+                this.mouse.y = mouseY;
             }
         }, false);
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
+        }, false);
+        window.addEventListener('devicemotion', event => {
+            // Y = < 0 up > 0 down
+            // X = < 0 left > 0 rigth
+            const x = event.accelerationIncludingGravity.x;
+            const y = event.accelerationIncludingGravity.y;
+            // determing key by measuring aceleration axis
+            if(x >= 1) {
+                rightKey = true;
+                leftKey = false;
+            } else if(x <= -1) {
+                leftKey = true;
+                rightKey = false;
+            } else {
+                leftKey = false;
+                rightKey = false;
+            }
+            if(y >= 1) {
+                downKey = false;
+                upKey = true;
+            } else if(y <= -1) {
+                upKey = false;
+                downKey = true;
+            } else {
+                upKey = false;
+                downKey = false;
+            }
         }, false);
 
         this.SCREEN_WIDTH = window.innerWidth;
@@ -55,32 +83,39 @@ class Main {
         this.entities = [];
         this.player = null;
         this.mouse = { click: false, x: 0, y: 0 };
-        this.render = new Render(this.SCREEN_WIDTH, this.SCREEN_HEIGHT, this.entities);
-        this.ui = new UI();
-        this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2));
+        this.ui = new UI(this.entities);
+        this.render = new Render(this);
+
+        this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, 40));
         this.update();
     }
     
     update() {
         setTimeout(() => this.update(), 50);
 
-        let playerPosition = this.player.getPosition();
-
         if(upKey) {
-            playerPosition.x -= this.player.getVelocity();
-        } else if(downKey) {
-            playerPosition.x += this.player.getVelocity();
-        } else if(leftKey) {
-            playerPosition.y -= this.player.getVelocity();
-        } else if(rightKey) {
-            playerPosition.y += this.player.getVelocity();
-        } else if(this.mouse.click) {
+            const newVelocity = this.player.getVelocity().y -= this.player.getAceleration();
+            this.player.setVelocityY(newVelocity);
+        }
+        if(downKey) {
+            const newVelocity = this.player.getVelocity().y += this.player.getAceleration();
+            this.player.setVelocityY(newVelocity);
+        }
+        if(leftKey) {
+            const newVelocity = this.player.getVelocity().x -= this.player.getAceleration();
+            this.player.setVelocityX(newVelocity);
+        }
+        if(rightKey) {
+            const newVelocity = this.player.getVelocity().x += this.player.getAceleration();
+            this.player.setVelocityX(newVelocity);
+        }
+        if(this.mouse.click) {
             this.createEntity( new Sound(this.mouse.x, this.mouse.y, this.ui.soundName) );
-            this.ui.hideOptionsPanel();
+            this.ui.hidePanel();
             this.mouse.click = false;
         }
 
-        this.player.update(playerPosition);
+        this.player.update();
     }
 
     createEntity(object) {
