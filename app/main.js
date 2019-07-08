@@ -4,6 +4,7 @@ import Sound from './sound';
 import UI from './ui';
 
 let upKey = false, downKey = false, leftKey = false, rightKey = false;
+
 class Main {   
     
     constructor() {
@@ -57,21 +58,21 @@ class Main {
             const y = event.accelerationIncludingGravity.y;
             // determing key by measuring aceleration axis
             if(x >= 1) {
-                rightKey = true;
-                leftKey = false;
-            } else if(x <= -1) {
                 leftKey = true;
                 rightKey = false;
+            } else if(x <= -1) {
+                rightKey = true;
+                leftKey = false;
             } else {
                 leftKey = false;
                 rightKey = false;
             }
             if(y >= 1) {
-                downKey = false;
-                upKey = true;
-            } else if(y <= -1) {
                 upKey = false;
                 downKey = true;
+            } else if(y <= -1) {
+                downKey = false;
+                upKey = true;
             } else {
                 upKey = false;
                 downKey = false;
@@ -88,15 +89,6 @@ class Main {
 
         this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, 40));
         this.update();
-
-        let element = document.createElement('p');
-        document.body.append(element);
-        if(window.DeviceMotionEvent) {
-            element.innerText = "te anda guachin";
-        } else {
-            element.innerText = "no se andaa nia ahiii!";
-        }
-        
     }
     
     update() {
@@ -132,7 +124,11 @@ class Main {
         if(object.getId() === 'player' && this.player === null) this.player = object;
         this.entities.push(object);
     }
-   
+}
+
+// Validates if the user is using http and redirect it to the https site
+if(window.location.host !== 'localhost:1234' && window.location.protocol !== 'https:') {
+    window.location.replace("https://audio-journey.herokuapp.com");
 }
 
 new Main();
