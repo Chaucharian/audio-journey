@@ -34,19 +34,7 @@ class Main {
             }
         }, false);
         document.addEventListener('mousedown', event => {
-            const soundName = event.target.innerText;
-            const mouseX = event.pageX, mouseY = event.pageY;
-
-            if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
-                this.ui.showPanel(event.clientX, event.clientY);
-            } else if(soundName === '') { // open sound selection panel
-                this.ui.showPanel(event.clientX, event.clientY);
-            } else { // instance sound 
-                this.ui.soundName = soundName;
-                this.mouse.click = true;
-                this.mouse.x = mouseX;
-                this.mouse.y = mouseY;
-            }
+            this.clickOrTouchHandler(event);
         }, false);
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
@@ -77,6 +65,12 @@ class Main {
                 upKey = false;
                 downKey = false;
             }
+        }, false);
+        document.addEventListener("touchstart", event => {
+            this.clickOrTouchHandler(event);
+        }, false);
+        document.addEventListener("touchend", event => {
+            this.mouse.click = false;
         }, false);
 
         this.SCREEN_WIDTH = window.innerWidth;
@@ -124,10 +118,42 @@ class Main {
         if(object.getId() === 'player' && this.player === null) this.player = object;
         this.entities.push(object);
     }
+
+    clickOrTouchHandler(event) {
+        if(event.touches !== undefined) {
+            const soundName = event.touches[0].target.innerText;
+            const mouseX = event.touches[0].pageX, mouseY = event.touches[0].pageY;
+
+            if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
+                this.ui.showPanel(event.touches[0].clientX, event.touches[0].clientY);
+            } else if(soundName === '') { // open sound selection panel
+                this.ui.showPanel(event.touches[0].clientX, event.touches[0].clientY);
+            } else { // instance sound 
+                this.ui.soundName = soundName;
+                this.mouse.click = true;
+                this.mouse.x = mouseX;
+                this.mouse.y = mouseY;
+            }
+        } else {
+            const soundName = event.target.innerText;
+            const mouseX = event.pageX, mouseY = event.pageY;
+
+            if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else if(soundName === '') { // open sound selection panel
+                this.ui.showPanel(event.clientX, event.clientY);
+            } else { // instance sound 
+                this.ui.soundName = soundName;
+                this.mouse.click = true;
+                this.mouse.x = mouseX;
+                this.mouse.y = mouseY;
+            }
+        }
+    }
 }
 
 // Validates if the user is using http and redirect it to the https site
-if(window.location.host !== 'localhost:1234' && window.location.protocol !== 'https:') {
+if(window.location.host.split(':')[1] !== '1234' && window.location.protocol !== 'https:') {
     window.location.replace("https://audio-journey.herokuapp.com");
 }
 
