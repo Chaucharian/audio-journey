@@ -12,19 +12,20 @@ class Player extends Entity {
     }
 
     update() {
+        this.velocity.x *= 0.9;
+        this.velocity.y *= 0.9;
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;  
+  
         Howler.pos(this.position.x, this.position.y, -0.5);
     }
 
     setVelocityX(velocity) {
         this.velocity.x = velocity;
-        this.velocity.x *= 0.9;
-        this.position.x += this.velocity.x;
     }
 
     setVelocityY(velocity) {
         this.velocity.y = velocity;
-        this.velocity.y *= 0.9;
-        this.position.y += this.velocity.y;    
     }
 
     getVelocity() {

@@ -50,7 +50,7 @@ class Main {
         document.addEventListener('mouseup', event => {
             this.mouse.click = false;
         }, false);
-        window.addEventListener('deviceorientation', event => {
+       /* window.addEventListener('deviceorientation', event => {
             let x = event.beta;  // In degree in the range [-180,180]
             let y = event.gamma; // In degree in the range [-90,90]
 
@@ -65,7 +65,14 @@ class Main {
             y += 90;
             
             this.player.setOrientationValues({ x, y });
-        });
+        });*/
+        window.addEventListener('devicemotion', event => {
+            // Y = < 0 arriba > 0 abajo
+            // X = < 0 izquierda > 0 derecha
+            // console.log(event.accelerationIncludingGravity.y);
+        }, false);
+
+
 
 
         this.SCREEN_WIDTH = window.innerWidth;
