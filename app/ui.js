@@ -5,6 +5,7 @@ class UI {
         this.soundSelectionPanel = document.getElementById('sound-selection');
         this.soundEntities = soundEntities;
         this.soundClicked = false;
+        this.closePanelInterval = null;
     }
 
     showPanel(mouseX, mouseY) {
@@ -21,11 +22,16 @@ class UI {
             this.soundConfigPanel.style.display = 'none';
             this.soundSelectionPanel.style.display = 'block';
         }
-    
+        this.closePanelInterval = setInterval( () => this.hidePanel(), 2000); // if after 2 seconds nothing happens close the panel
     }
 
     hidePanel() {
         this.panel.style.display = 'none';
+        clearInterval(this.closePanelInterval);
+    }
+
+    isOpen() {
+        return this.isOpen;
     }
 
     soundFound(mouseX, mouseY) {
