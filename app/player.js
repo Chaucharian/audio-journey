@@ -20,6 +20,14 @@ class Player extends Entity {
         Howler.pos(this.position.x, this.position.y, -0.5);
     }
 
+    setPosition(x, y) {
+        this.position = { x, y };
+    }
+
+    getPosition() {
+        return this.position;
+    }
+
     setVelocityX(velocity) {
         this.velocity.x = velocity;
     }

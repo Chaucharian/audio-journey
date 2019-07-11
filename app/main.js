@@ -109,6 +109,16 @@ class Main {
             this.ui.hidePanel();
             this.mouse.click = false;
         }
+        // when player reaches the screen bounds
+        if( (this.player.getPosition().x - this.player.getSize() / 2) >= this.SCREEN_WIDTH) {
+            this.player.setPosition(0, this.player.getPosition().y);
+        } else if(this.player.getPosition().x <= 0) {
+            this.player.setPosition(this.SCREEN_WIDTH, this.player.getPosition().y);
+        } else if(this.player.getPosition().y  <= 0) {
+            this.player.setPosition(this.player.getPosition().x, this.SCREEN_HEIGHT);
+        } else if( (this.player.getPosition().y - this.player.getSize() / 2) >= this.SCREEN_HEIGHT) {
+            this.player.setPosition(this.player.getPosition().x, 0);
+        }
 
         this.player.update();
     }
