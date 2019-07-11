@@ -45,20 +45,20 @@ class Main {
             const x = event.accelerationIncludingGravity.x;
             const y = event.accelerationIncludingGravity.y;
             // determing key by measuring aceleration axis
-            if(x >= 1) {
+            if(x >= 0.5) {
                 leftKey = true;
                 rightKey = false;
-            } else if(x <= -1) {
+            } else if(x <= -0.5) {
                 rightKey = true;
                 leftKey = false;
             } else {
                 leftKey = false;
                 rightKey = false;
             }
-            if(y >= 1) {
+            if(y >= 0.5) {
                 upKey = false;
                 downKey = true;
-            } else if(y <= -1) {
+            } else if(y <= -0.5) {
                 downKey = false;
                 upKey = true;
             } else {
