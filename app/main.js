@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import Player from './player';
 import Render from './render';
 import Sound from './sound';
@@ -80,9 +81,9 @@ class Main {
         this.mouse = { click: false, x: 0, y: 0 };
         this.ui = new UI(this.entities);
         this.render = new Render(this);
-
         this.createEntity(new Player(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, 40));
         this.update();
+        this.keepAwake();
     }
     
     update() {
@@ -150,9 +151,22 @@ class Main {
             }
         }
     }
+
+    async keepAwake() {
+        let wakeLockObj;
+        if ('getWakeLock' in navigator) {
+            try {
+                // Create a wake lock for the type we want.
+                wakeLockObj = await navigator.getWakeLock('screen');
+                console.log('👍', 'getWakeLock', wakeLockObj);
+            } catch (ex) {
+                console.error('👎', 'getWakeLock', err);
+            }
+        }
+    }
 }
 
-// Validates if the user is using http and redirect it to the https site
+// Validates if the user is using http and is not runnning local, then redirect it to the https site
 if(window.location.host.split(':')[1] !== '1234' && window.location.protocol !== 'https:') {
     window.location.replace("https://audio-journey.herokuapp.com");
 }
