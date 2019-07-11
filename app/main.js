@@ -158,6 +158,7 @@ class Main {
             try {
                 // Create a wake lock for the type we want.
                 wakeLockObj = await navigator.getWakeLock('screen');
+                wakeLockObj.createRequest();
                 console.log('👍', 'getWakeLock', wakeLockObj);
             } catch (ex) {
                 console.error('👎', 'getWakeLock', err);
