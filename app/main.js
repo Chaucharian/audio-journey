@@ -121,12 +121,12 @@ class Main {
 
     clickOrTouchHandler(event) {
         if(event.touches !== undefined) {
-            const soundName = event.touches[0].target.innerText;
+            const soundName = event.touches[0].target.getAttribute('name'); 
             const mouseX = event.touches[0].pageX, mouseY = event.touches[0].pageY;
 
             if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
                 this.ui.showPanel(event.touches[0].clientX, event.touches[0].clientY);
-            } else if(soundName === '') { // open sound selection panel
+            } else if(soundName === null) { // open sound selection panel
                 this.ui.showPanel(event.touches[0].clientX, event.touches[0].clientY);
             } else { // instance sound 
                 this.ui.soundName = soundName;
@@ -135,12 +135,12 @@ class Main {
                 this.mouse.y = mouseY;
             }
         } else {
-            const soundName = event.target.innerText;
+            const soundName = event.target.getAttribute('name');
             const mouseX = event.pageX, mouseY = event.pageY;
 
             if(this.ui.soundFound(mouseX, mouseY)) { // open sound config panel
                 this.ui.showPanel(event.clientX, event.clientY);
-            } else if(soundName === '') { // open sound selection panel
+            } else if(soundName === null) { // open sound selection panel
                 this.ui.showPanel(event.clientX, event.clientY);
             } else { // instance sound 
                 this.ui.soundName = soundName;
