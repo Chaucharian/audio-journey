@@ -4,7 +4,7 @@ import Sound from './sound';
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
-const AudioWorld = () => {
+const WorldGame = () => {
 
     const randomRgba = () => {
         const o = Math.round, r = Math.random, s = 255;
@@ -97,6 +97,13 @@ const AudioWorld = () => {
         runner: runner,
         render: render,
         canvas: render.canvas,
+        start: function () {
+            Matter.Render.run(render);
+            Matter.Runner.run(runner, engine);
+            if (typeof window !== 'undefined') {
+                window.addEventListener('deviceorientation', updateGravity);
+            }
+        },
         stop: function () {
             Matter.Render.stop(render);
             Matter.Runner.stop(runner);
@@ -107,5 +114,4 @@ const AudioWorld = () => {
     };
 };
 
-AudioWorld();
-
+export default WorldGame;
