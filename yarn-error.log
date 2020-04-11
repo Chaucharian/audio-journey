@@ -1,0 +1,67 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js add matter-js
+
+PATH: 
+  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/Chaucha/Documents/JavaScript Projects/audio-journey/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Wireshark.app/Contents/MacOS:/users/chaucha/library/android/sdk/tools:/users/chaucha/library/android/sdk/platform-tools
+
+Yarn version: 
+  1.6.0
+
+Node version: 
+  12.16.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EACCES: permission denied, mkdir '/Users/Chaucha/Documents/JavaScript Projects/audio-journey/node_modules/postcss-calc/node_modules/postcss-value-parser'
+
+npm manifest: 
+  {
+    "name": "audio-journey",
+    "version": "0.0.1",
+    "description": "Walk throught sounds",
+    "main": "index.js",
+    "scripts": {
+      "start": "node ./server.js",
+      "build": "parcel build ./app/index.html",
+      "develop": "parcel ./app/index.html",
+      "heroku-postbuild": "parcel build ./app/index.html"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Chaucharian/audio-journey.git"
+    },
+    "keywords": [
+      "audio",
+      "spatial",
+      "3d",
+      "sound",
+      "arduino",
+      "node"
+    ],
+    "author": "AS",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/Chaucharian/audio-journey/issues"
+    },
+    "dependencies": {
+      "babel-polyfill": "^6.26.0",
+      "express": "^4.16.4",
+      "howler": "^2.1.2",
+      "p5": "^0.8.0",
+      "parcel": "^1.12.3",
+      "parcel-bundler": "^1.12.3",
+      "sounds": "^1.0.2"
+    },
+    "devDependencies": {
+      "cssnano": "^4.1.10"
+    },
+    "homepage": "https://github.com/Chaucharian/audio-journey#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
