@@ -35,9 +35,10 @@
     "p5": "^0.8.0",
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
-    "react": ">= 16.8.0",
-    "react-dom": ">= 16.8.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-spring": "^8.0.27",
+    "rxjs": "^6.5.5",
     "sounds": "^1.0.2"
   },
   "devDependencies": {

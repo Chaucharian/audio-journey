@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@material-ui/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, Backdrop } from '@material-ui/core';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support

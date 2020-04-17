@@ -1,11 +1,11 @@
 import Matter, { Body, Engine, Render, Common, Runner, World, Bodies, Events } from 'matter-js';
 import Player from './player';
 import Sound from './sound';
+import { watcher } from './main';
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
-const WorldGame = () => {
-
+const WorldGame = dispatcher => {
     const randomRgba = () => {
         const o = Math.round, r = Math.random, s = 255;
         return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
@@ -40,8 +40,15 @@ const WorldGame = () => {
     const loadListeners = () => {
         window.addEventListener('deviceorientation', updateGravity, false);
         window.addEventListener('mousedown', ({ clientX, clientY }) => {
+            //addAudio(clientX, clientY, audio) );
+            dispatcher.next( callback => callback.then( data => {
+                console.log(data);
+            }) );
+        }, false);
+        window.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
             addAudio(clientX, clientY);
         }, false);
+        
         // window.addEventListener('mouseup', updateGravity, false);
     }
     loadListeners();
@@ -74,6 +81,8 @@ const WorldGame = () => {
         const { bodies } = world;
         const { x: playerX, y: playerY } = player.getPosition();
 
+        // console.log(watcher);
+
         if (playerX >= SCREEN_WIDTH) {
             Body.setPosition(player.getBody(), { x: 0, y: playerY });
         } else if (playerX <= 0) {
@@ -91,7 +100,9 @@ const WorldGame = () => {
         max: { x: SCREEN_WIDTH, y: SCREEN_HEIGHT }
     });
 
+
     // context for MatterTools.Demo
+    // setTimeout( () => onModalHandler(), 2000);
     return {
         engine: engine,
         runner: runner,
