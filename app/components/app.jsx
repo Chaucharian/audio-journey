@@ -8,7 +8,9 @@ const App = ({ game }) => {
     const [isModalOpen, showModal] = useState(false);
 
     const onModalHandler = action => {
+        console.log(" ACTION ",action);
         if(action === 'close') {
+            modalResponse.resolve(action);
             showModal(false);
         } else if(action === 'startRecording') {
             audioRecorder.start();

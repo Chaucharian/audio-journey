@@ -37,16 +37,24 @@ const WorldGame = dispatcher => {
             gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
         }
     };
-    const loadListeners = canvas => {
+    const loadListeners = (canvas, start, stop) => {
         window.addEventListener('deviceorientation', updateGravity, false);
         canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
+            stop();
             dispatcher.next( callback => callback.then( data => {
-                addAudio(clientX, clientY, data);
+                start();
+                if(data !== 'close') {
+                    addAudio(clientX, clientY, data);
+                }
             }) );
         }, false);
         canvas.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
+            stop();
             dispatcher.next( callback => callback.then( data => {
-                addAudio(clientX, clientY, data);
+                start();
+                if(data !== 'close') {
+                    addAudio(clientX, clientY, data);
+                }
             }) );
         }, false);
     }
@@ -65,7 +73,6 @@ const WorldGame = dispatcher => {
             wireframes: false
         }
     });
-    loadListeners(render.canvas);
 
     const player = new Player(Bodies.circle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 20, { label: "player" }));
 
@@ -99,28 +106,28 @@ const WorldGame = dispatcher => {
         max: { x: SCREEN_WIDTH, y: SCREEN_HEIGHT }
     });
 
+    const start = () => {
+        Matter.Render.run(render);
+        Matter.Runner.run(runner, engine);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('deviceorientation', updateGravity);
+        }
+    }
+    const stop = () => {
+        Matter.Render.stop(render);
+        Matter.Runner.stop(runner);
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('deviceorientation', updateGravity);
+        }
+    }
 
-    // context for MatterTools.Demo
-    // setTimeout( () => onModalHandler(), 2000);
+    loadListeners(render.canvas, start, stop);
+
     return {
         engine: engine,
         runner: runner,
         render: render,
-        canvas: render.canvas,
-        start: function () {
-            Matter.Render.run(render);
-            Matter.Runner.run(runner, engine);
-            if (typeof window !== 'undefined') {
-                window.addEventListener('deviceorientation', updateGravity);
-            }
-        },
-        stop: function () {
-            Matter.Render.stop(render);
-            Matter.Runner.stop(runner);
-            if (typeof window !== 'undefined') {
-                window.removeEventListener('deviceorientation', updateGravity);
-            }
-        }
+        canvas: render.canvas
     };
 };
 
