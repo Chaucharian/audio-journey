@@ -8,7 +8,6 @@ const App = ({ game }) => {
     const [isModalOpen, showModal] = useState(false);
 
     const onModalHandler = action => {
-        console.log(" ACTION ",action);
         if(action === 'close') {
             modalResponse.resolve(action);
             showModal(false);
@@ -43,7 +42,7 @@ const App = ({ game }) => {
     return (
         <Modal 
         open={isModalOpen} 
-        title={ "Graba un audio o elige una pista" }
+        title={ "Manten presionado el microfono y graba una pista" }
         // content={ "testing" }
         onAction={onModalHandler}
         />

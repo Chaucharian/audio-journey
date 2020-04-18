@@ -83,9 +83,9 @@ const CustomModal = ({ open, title, content, onAction }) => {
           <p id="spring-modal-description">{content}</p>
           <div>
             <RecordingButton onClick={() => onActionHandler("startRecording")} onClickUp={() => onAction("stopRecording")} />
-            <ShinyButton text="Naturaleza" onClick={() => onActionHandler("Nature")} />
+            {/* <ShinyButton text="Naturaleza" onClick={() => onActionHandler("Nature")} />
             <ShinyButton text="Fuego" onClick={() => onActionHandler("Fire")} />
-            <ShinyButton text="Ambiente" onClick={() => onActionHandler("Ambient")} />
+            <ShinyButton text="Ambiente" onClick={() => onActionHandler("Ambient")} /> */}
             <ShinyButton text="CERRAR" onClick={() => onActionHandler("close")} />
           </div>
         </div>

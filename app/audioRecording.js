@@ -10,7 +10,7 @@ export default () => {
           });
   
           const start = () => {
-            mediaRecorder.start();
+            mediaRecorder.state === 'inactive' && mediaRecorder.start();
           };
   
           const stop = () => {
@@ -26,7 +26,7 @@ export default () => {
                 resolve({ audioBlob, audioUrl, play });
               });
   
-              mediaRecorder.stop();
+              mediaRecorder.state !== 'inactive' && mediaRecorder.stop();
             });
           };
   
