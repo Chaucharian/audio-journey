@@ -4,22 +4,22 @@ import AudioRecording from '../audioRecording';
 
 const App = ({ game }) => {
     const [modalResponse, setModalResponse] = useState(null);
+    const [audioRecorder, setAudioRecorder] = useState(null);
     const [isModalOpen, showModal] = useState(false);
 
     const onModalHandler = action => {
         if(action === 'close') {
             showModal(false);
         } else if(action === 'startRecording') {
-            AudioRecording().then(({ start, stop }) => {
-                start();
-                setTimeout( () => stop().then( ({ play, audioUrl }) => {
-                    // play();
-                    modalResponse.resolve(audioUrl);
-                }) , 4000);
-        });
-
+            audioRecorder.start();
         } else if(action === 'stopRecording') {
-            
+            audioRecorder.stop().then( ({ audioUrl }) => { 
+                modalResponse.resolve(audioUrl);
+                showModal(false);
+            });
+        } else {
+            modalResponse.resolve(action);
+            showModal(false);
         }
     }
 
@@ -27,19 +27,22 @@ const App = ({ game }) => {
         game.subscribe({
             next: callback => {
                 showModal(true);
+                AudioRecording().then(({ start, stop }) => {
+                    setAudioRecorder({ start, stop });
+                });
                 callback(new Promise( resolve => {
                     const promiseResolver = { resolve: data => resolve(data) };
                     setModalResponse(promiseResolver);
                 }));
             }
         });
-    }, []); 
-
+    }, []);
+    
     return (
         <Modal 
         open={isModalOpen} 
-        title={ "testing" }
-        content={ "testing" }
+        title={ "Graba un audio o elige una pista" }
+        // content={ "testing" }
         onAction={onModalHandler}
         />
     );

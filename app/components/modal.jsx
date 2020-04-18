@@ -50,8 +50,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 const CustomModal = ({ open, title, content, onAction, onStartRecording, onStopRecording }) => {
     const classes = useStyles();
 
-
-
     return (
         <Modal
         aria-labelledby="spring-modal-title"
@@ -71,7 +69,10 @@ const CustomModal = ({ open, title, content, onAction, onStartRecording, onStopR
             <p id="spring-modal-description">{content}</p>
             <div>
                 <RecordingButton onClick={() => onAction("startRecording")} onClickUp={() => onAction("stopRecording")} />
-                <ShinyButton text="CONFIRMAR" onClick={() => onAction("close")} />
+                <ShinyButton text="Naturaleza" onClick={() => onAction("Nature")} />
+                <ShinyButton text="Fuego" onClick={() => onAction("Fire")} />
+                <ShinyButton text="Ambiente" onClick={() => onAction("Ambient")} />
+                <ShinyButton text="CERRAR" onClick={() => onAction("close")} />
             </div>
           </div>
         </Fade>

@@ -37,21 +37,18 @@ const WorldGame = dispatcher => {
             gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
         }
     };
-    const loadListeners = () => {
+    const loadListeners = canvas => {
         window.addEventListener('deviceorientation', updateGravity, false);
-        window.addEventListener('mousedown', ({ clientX, clientY }) => {
+        canvas.addEventListener('mousedown', ({ clientX, clientY }) => {
             dispatcher.next( callback => callback.then( data => {
-                console.log(data);
                 addAudio(clientX, clientY, data);
             }) );
         }, false);
         window.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
             addAudio(clientX, clientY);
         }, false);
-        
-        // window.addEventListener('mouseup', updateGravity, false);
     }
-    loadListeners();
+
     // create engine
     var engine = Engine.create(),
         world = engine.world;
@@ -66,6 +63,8 @@ const WorldGame = dispatcher => {
             wireframes: false
         }
     });
+    loadListeners(render.canvas);
+
     const player = new Player(Bodies.circle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 20, { label: "player" }));
 
     Render.run(render);
@@ -80,8 +79,6 @@ const WorldGame = dispatcher => {
         const { source: { world } } = event;
         const { bodies } = world;
         const { x: playerX, y: playerY } = player.getPosition();
-
-        // console.log(watcher);
 
         if (playerX >= SCREEN_WIDTH) {
             Body.setPosition(player.getBody(), { x: 0, y: playerY });
