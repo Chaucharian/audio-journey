@@ -44,8 +44,10 @@ const WorldGame = dispatcher => {
                 addAudio(clientX, clientY, data);
             }) );
         }, false);
-        window.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
-            addAudio(clientX, clientY);
+        canvas.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
+            dispatcher.next( callback => callback.then( data => {
+                addAudio(clientX, clientY, data);
+            }) );
         }, false);
     }
 

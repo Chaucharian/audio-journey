@@ -1,7 +1,7 @@
 import { Howl } from 'howler';
-import ambientSound from './sounds/ambiente.mp3';
-import fogataSound from './sounds/fuego.mp3';
-import natureeSound from './sounds/naturaleza.mp3';
+import ambientSound from '/sounds/ambiente.mp3';
+import fogataSound from '/sounds/fuego.mp3';
+import natureeSound from '/sounds/naturaleza.mp3';
 
 class Sound {
 

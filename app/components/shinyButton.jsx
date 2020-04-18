@@ -80,6 +80,8 @@ const ShinyButton = (props) => {
         className={classes.button +' '+ (strong ? classes.boldFont : '' )} 
         onMouseDown={ () => onClick && onClick()} 
         onMouseUp={() => onClickUp && onClickUp()}
+        onTouchStart={ () => onClick && onClick()} 
+        onTouchEnd={() => onClickUp && onClickUp()}
     >
         <div>
             { text && <a>{ text }</a> }
