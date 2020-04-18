@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Modal, Backdrop } from '@material-ui/core';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import ShinyButton from './shinyButton';
+import RecordingButton from './recordingButton';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -46,8 +47,10 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const CustomModal = ({ open, title, content, onAction }) => {
+const CustomModal = ({ open, title, content, onAction, onStartRecording, onStopRecording }) => {
     const classes = useStyles();
+
+
 
     return (
         <Modal
@@ -55,7 +58,7 @@ const CustomModal = ({ open, title, content, onAction }) => {
         aria-describedby="spring-modal-description"
         className={classes.modal}
         open={open}
-        onClose={() => onAction("cancel")}
+        onClose={() => onAction("close")}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -67,7 +70,8 @@ const CustomModal = ({ open, title, content, onAction }) => {
             <h2 id="spring-modal-title">{title}</h2>
             <p id="spring-modal-description">{content}</p>
             <div>
-                <ShinyButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
+                <RecordingButton onClick={() => onAction("startRecording")} onClickUp={() => onAction("stopRecording")} />
+                <ShinyButton text="CONFIRMAR" onClick={() => onAction("close")} />
             </div>
           </div>
         </Fade>

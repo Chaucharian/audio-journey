@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './modal';
+import AudioRecording from '../audioRecording';
 
 const App = ({ game }) => {
     const [modalResponse, setModalResponse] = useState(null);
     const [isModalOpen, showModal] = useState(false);
 
-    const onModalHandler = () => {
-        modalResponse.resolve("DATA");
-        showModal(false);
+    const onModalHandler = action => {
+        if(action === 'close') {
+            showModal(false);
+        } else if(action === 'startRecording') {
+            AudioRecording().then(({ start, stop }) => {
+                start();
+                setTimeout( () => stop().then( ({ play, audioUrl }) => {
+                    // play();
+                    modalResponse.resolve(audioUrl);
+                }) , 4000);
+        });
+
+        } else if(action === 'stopRecording') {
+            
+        }
     }
 
     useEffect( () => {

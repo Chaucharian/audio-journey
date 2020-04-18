@@ -38,6 +38,10 @@ const styles = {
         },
          
         "& div": {
+            display: "flex",
+            justifyContent: "center",
+            fontSize: "20px",
+            color: "white",
             "& a": {
                 color: "#969696",
                 fontFamily: "Varela Round",
@@ -63,17 +67,21 @@ const styles = {
     },
     boldFont: {
         fontWeight: "bold"
-    }    
+    }
 }
 
 const ShinyButton = (props) => {
-    const { classes, text, icon } = props;
-    const clicked = props.clicked ? props.clicked : () => {};
+    const { classes, text, onClick, onClickUp, strong, icon } = props;
 
     return (
-    <button type='submit' className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => clicked(true)}>
+    <button 
+        type='submit' 
+        className={classes.button +' '+ (strong ? classes.boldFont : '' )} 
+        onMouseDown={ () => onClick && onClick()} 
+        onMouseUp={() => onClickUp && onClickUp()}
+    >
         <div>
-            <a>{ text }</a>
+            { text && <a>{ text }</a> }
             { icon }
             <div className="mask"></div>
         </div>

@@ -23,11 +23,14 @@ class Sound {
                 this.soundPath = ambientSound;
             break;
         }
-        
+
         this.sound = new Howl({
             src: [this.soundPath],
+            autoplay: true,
+            format: ['ogg'],
             loop: true
         });
+        
         const soundId = this.sound.play();
         this.sound.once('play', () => {
           // Set the position of the speaker in 3D space.

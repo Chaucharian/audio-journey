@@ -11,7 +11,7 @@ const WorldGame = dispatcher => {
         return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
     }
     const addAudio = (x, y, sound) => {
-        new Sound(x, y, 'Nature');
+        new Sound(x, y, sound);
         World.add(world, Bodies.circle(x, y, 20, {
             label: "audio",
             isStatic: true,
@@ -40,9 +40,9 @@ const WorldGame = dispatcher => {
     const loadListeners = () => {
         window.addEventListener('deviceorientation', updateGravity, false);
         window.addEventListener('mousedown', ({ clientX, clientY }) => {
-            //addAudio(clientX, clientY, audio) );
             dispatcher.next( callback => callback.then( data => {
                 console.log(data);
+                addAudio(clientX, clientY, data);
             }) );
         }, false);
         window.addEventListener('touchstart', ({ touches: [{ clientX, clientY }] }) => {
