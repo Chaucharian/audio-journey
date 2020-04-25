@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, Backdrop } from '@material-ui/core';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import ShinyButton from './shinyButton';
-import RecordingButton from './recordingButton';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -47,22 +45,8 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const CustomModal = ({ open, title, content, onAction }) => {
+const CustomModal = ({ children, open, title, content, onAction }) => {
   const classes = useStyles();
-  const [selectionEnabled, enableSelection] = useState(false);
-
-  const onActionHandler = action => selectionEnabled && onAction(action);
-
-  useEffect( () => {
-    // avoiding fast clicking
-    if(open) {
-      setTimeout( () => {
-        enableSelection(true);
-      }, 500);
-    } else {
-      enableSelection(false);
-    }
-  }, [open]);
 
   return (
     <Modal
@@ -82,11 +66,7 @@ const CustomModal = ({ open, title, content, onAction }) => {
           <h2 id="spring-modal-title">{title}</h2>
           <p id="spring-modal-description">{content}</p>
           <div>
-            <RecordingButton onClick={() => onActionHandler("startRecording")} onClickUp={() => onAction("stopRecording")} />
-            {/* <ShinyButton text="Naturaleza" onClick={() => onActionHandler("Nature")} />
-            <ShinyButton text="Fuego" onClick={() => onActionHandler("Fire")} />
-            <ShinyButton text="Ambiente" onClick={() => onActionHandler("Ambient")} /> */}
-            <ShinyButton text="CERRAR" onClick={() => onActionHandler("close")} />
+          { children }
           </div>
         </div>
       </Fade>
