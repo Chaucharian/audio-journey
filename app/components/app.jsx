@@ -54,6 +54,7 @@ const App = ({ game }) => {
             audioRecorder.stop().then(({ audioUrl }) => {
                 modalResponse.resolve(audioUrl);
                 dispatch({ type: "SHOW_MODAL", payload: false });
+                dispatch({ type: "CHANGE_STEP", payload: 'INITIAL' });
             });
         } else {
             modalResponse.resolve(action);
@@ -95,34 +96,47 @@ const App = ({ game }) => {
     }
 
     useEffect(() => {
-        game.subscribe({
+        let gameSubscription = game.subscribe({
             next: ({ callback, action }) => {
                 console.log(action);
-                dispatch({ type: "LOADING", payload: false });
-                if (action === "MOBILE_NEEDED") {
-                    dispatch({ type: "SHOW_MODAL", payload: true });
-                    dispatch({ type: "CHANGE_STEP", payload: action });
-                } else if (action === "RECORD_AUDIO") {
-                    dispatch({ type: "SHOW_MODAL", payload: true });
-                    dispatch({ type: "CHANGE_STEP", payload: action });
-                    AudioRecording().then(({ start, stop }) => {
-                        dispatch({ type: 'INSTANCE_AUDIO_RECORDER', payload: { start, stop } });
-                    });
-                    callback(new Promise(resolve => {
-                        const promiseResolver = { resolve: data => resolve(data) };
-                        dispatch({ type: 'SET_MODAL_RESPONSE', payload: promiseResolver });
-                    }));
-                } else if (action === "BETTER_DEVICE_NEEDED_BARAT") {
-                    dispatch({ type: "CHANGE_STEP", payload: action });
-                    dispatch({ type: "SHOW_MODAL", payload: true });
-                } else if (action === "LOADING") {
-                    dispatch({ type: "LOADING", payload: true });
-                    dispatch({ type: "SHOW_MODAL", payload: true });
-                } else if (action === "PLAY") {
-                    dispatch({ type: "SHOW_MODAL", payload: false });
+                switch(action) {
+                    case "MOBILE_NEEDED":{
+                        dispatch({ type: "SHOW_MODAL", payload: true });
+                        dispatch({ type: "CHANGE_STEP", payload: action });
+                    }
+                    break;
+                    case "RECORD_AUDIO": {
+                        dispatch({ type: "SHOW_MODAL", payload: true });
+                        dispatch({ type: "CHANGE_STEP", payload: action });
+                        AudioRecording().then(({ start, stop }) => {
+                            dispatch({ type: 'INSTANCE_AUDIO_RECORDER', payload: { start, stop } });
+                        });
+                        callback(new Promise(resolve => {
+                            const promiseResolver = { resolve: data => resolve(data) };
+                            dispatch({ type: 'SET_MODAL_RESPONSE', payload: promiseResolver });
+                        }));
+                    }
+                    break;
+                    case "BETTER_DEVICE_NEEDED_BARAT": {
+                        dispatch({ type: "CHANGE_STEP", payload: action });
+                        dispatch({ type: "SHOW_MODAL", payload: true });
+                    } 
+                    break;
+                    case "LOADING": {
+                        dispatch({ type: "LOADING", payload: true });
+                        dispatch({ type: "SHOW_MODAL", payload: true });
+                    }
+                    break;
+                    case "PLAY": {
+                        dispatch({ type: "SHOW_MODAL", payload: false });
+                    }
+                    break;
                 }
+                dispatch({ type: "LOADING", payload: false });
+
             }
         });
+        return () => gameSubscription.unsubscribe();
     }, []);
 
     return (
