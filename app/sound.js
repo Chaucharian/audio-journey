@@ -1,7 +1,4 @@
 import { Howl } from 'howler';
-import ambientSound from '/sounds/ambiente.mp3';
-import fogataSound from '/sounds/fuego.mp3';
-import natureeSound from '/sounds/naturaleza.mp3';
 
 class Sound {
 
@@ -12,17 +9,17 @@ class Sound {
         this.soundPath = soundPath;
         this.sound = '';
 
-        switch(this.soundPath) {
-            case 'Nature':
-                this.soundPath = natureeSound;
-            break;
-            case 'Fire':
-                this.soundPath = fogataSound;
-            break;
-            case 'Ambient':
-                this.soundPath = ambientSound;
-            break;
-        }
+        // switch(this.soundPath) {
+        //     case 'Nature':
+        //         this.soundPath = natureeSound;
+        //     break;
+        //     case 'Fire':
+        //         this.soundPath = fogataSound;
+        //     break;
+        //     case 'Ambient':
+        //         this.soundPath = ambientSound;
+        //     break;
+        // }
 
         this.sound = new Howl({
             src: [this.soundPath],
