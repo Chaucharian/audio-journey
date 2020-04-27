@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, Backdrop } from '@material-ui/core';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+import ShinyButton from './shinyButton';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -45,7 +46,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const CustomModal = ({ children, open, title, content, onAction }) => {
+const CustomModal = ({ children, open, title, content, canClose, onAction }) => {
   const classes = useStyles();
 
   return (
@@ -66,7 +67,8 @@ const CustomModal = ({ children, open, title, content, onAction }) => {
           <h2 id="spring-modal-title">{title}</h2>
           <p id="spring-modal-description">{content}</p>
           <div>
-          { children }
+            { children }
+            { canClose && <ShinyButton text="CERRAR" onClick={() => onAction("close")} /> }
           </div>
         </div>
       </Fade>

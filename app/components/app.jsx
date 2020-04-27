@@ -1,7 +1,7 @@
-import React, { useReducer, useEffect, isValidElement } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import RecordingModal from './recordingModal';
 import Modal from './modal';
-import AudioRecording from '../audioRecording';
+import AudioRecorder from '../audioRecorder';
 
 const state = {
     modalResponse: false,
@@ -65,7 +65,20 @@ const App = ({ game }) => {
     const viewToRender = () => {
         let view = <></>
         if (!loading) {
-            if (currentStep === 'MOBILE_NEEDED') {
+            if (currentStep === 'TUTORIAL') {
+                const content = 
+                    <>
+                        <p>Inclina tu celular hacia adelante, atras y los lados para desplazarte. Tocando la pantalla añades sonidos.</p>
+                        <p>Enjoy :)</p>
+                    </>;
+                view = <Modal
+                    canClose={true}
+                    open={showModal}
+                    title="Tutorial"
+                    content={content}
+                    onAction={onModalHandler}
+                />;
+            } else if (currentStep === 'MOBILE_NEEDED') {
                 view = <Modal
                     open={showModal}
                     title="Esta experiencia esta diseñada para celulares"
@@ -97,18 +110,28 @@ const App = ({ game }) => {
 
     useEffect(() => {
         let gameSubscription = game.subscribe({
-            next: ({ callback, action }) => {
-                console.log(action);
-                switch(action) {
+            next: ({ callback, action: { type, payload } }) => {
+                console.log(type);
+                dispatch({ type: "LOADING", payload: false });
+                switch(type) {
+                    case "TUTORIAL":{
+                        dispatch({ type: "SHOW_MODAL", payload: true });
+                        dispatch({ type: "CHANGE_STEP", payload: type });
+                        callback(new Promise(resolve => {
+                            const promiseResolver = { resolve: data => resolve(data) };
+                            dispatch({ type: 'SET_MODAL_RESPONSE', payload: promiseResolver });
+                        }));
+                    }
+                    break;
                     case "MOBILE_NEEDED":{
                         dispatch({ type: "SHOW_MODAL", payload: true });
-                        dispatch({ type: "CHANGE_STEP", payload: action });
+                        dispatch({ type: "CHANGE_STEP", payload: type });
                     }
                     break;
                     case "RECORD_AUDIO": {
                         dispatch({ type: "SHOW_MODAL", payload: true });
-                        dispatch({ type: "CHANGE_STEP", payload: action });
-                        AudioRecording().then(({ start, stop }) => {
+                        dispatch({ type: "CHANGE_STEP", payload: type });
+                        AudioRecorder().then(({ start, stop }) => {
                             dispatch({ type: 'INSTANCE_AUDIO_RECORDER', payload: { start, stop } });
                         });
                         callback(new Promise(resolve => {
@@ -118,7 +141,7 @@ const App = ({ game }) => {
                     }
                     break;
                     case "BETTER_DEVICE_NEEDED_BARAT": {
-                        dispatch({ type: "CHANGE_STEP", payload: action });
+                        dispatch({ type: "CHANGE_STEP", payload: type });
                         dispatch({ type: "SHOW_MODAL", payload: true });
                     } 
                     break;
@@ -128,12 +151,11 @@ const App = ({ game }) => {
                     }
                     break;
                     case "PLAY": {
+                        dispatch({ type: "CHANGE_STEP", payload: "PLAYING" });
                         dispatch({ type: "SHOW_MODAL", payload: false });
                     }
                     break;
                 }
-                dispatch({ type: "LOADING", payload: false });
-
             }
         });
         return () => gameSubscription.unsubscribe();
